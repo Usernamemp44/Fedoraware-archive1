@@ -18,7 +18,7 @@ void CVisuals::DrawHitboxMatrix(CBaseEntity* pEntity, Color_t colourface, Color_
 			continue;
 		}
 
-		/*if (bbox->m_radius <= 0.f) {*/
+		/*if (bbox->m_radius <= 0.f) { */
 		matrix3x4 rotMatrix;
 		Math::AngleMatrix(bbox->angle, rotMatrix);
 
@@ -481,11 +481,74 @@ void CVisuals::DrawTickbaseInfo(CBaseEntity* pLocal)
 						}
 						break;
 					}
-					case 5:
+					case 6:
 					{
-						g_Draw.String(FONT_INDICATORS, DTBox.c, DTBox.y - 3, { 255, 255, 255, 255 }, ALIGN_CENTERHORIZONTAL, L"%i/%i", G::ShiftedTicks, Vars::Misc::CL_Move::DTTicks.Value);
+						// Display different animations and colors based on DT status
+						static int frame = 0;
+						const char* chargingCatFrames[] = {
+							"   > ^ <   ",
+							"   > ^ <   ",
+							"   > ^ <   ",
+							"   > ^ <   "
+						};
+
+						const char* unchargedCatFrames[] = {
+							"  ( -.- )  ",
+							"  ( -.- )  ",
+							"  ( -.- )  ",
+							"  ( -.- )  "
+						};
+
+						const char* chargedCatFrames[] = {
+							"  ( ^-^ )  ",
+							"  ( ^-^ )  ",
+							"  ( ^-^ )  ",
+							"  ( ^-^ )  "
+						};
+
+						const char* waitingCatFrames[] = {
+							"   ?_?   ",
+							"   ?_?   ",
+							"   ?_?   ",
+							"   ?_?   "
+						};
+
+						if (frame >= 4) {
+							frame = 0;
+						}
+
+						const char** framesToDisplay = nullptr;
+						Color_t textColor = { 153, 255, 153, 255 }; // Default text color
+
+						if (G::Recharging) {
+							framesToDisplay = chargingCatFrames;
+						}
+						else if (G::ShiftedTicks == 0) {
+							framesToDisplay = unchargedCatFrames;
+							textColor = { 255, 64, 64, 255 }; // Red for uncharged
+						}
+						else if (G::WaitForShift) {
+							framesToDisplay = waitingCatFrames;
+							textColor = { 255, 178, 0, 255 }; // Yellow for wait
+						}
+						else {
+							framesToDisplay = chargedCatFrames;
+							textColor = { 66, 255, 0, 255 }; // Green for DT ready
+						}
+
+						g_Draw.String(FONT_INDICATORS, DTBox.c, DTBox.y - 3, textColor, ALIGN_CENTERHORIZONTAL, framesToDisplay[frame]);
+
+						frame++;
+
 						break;
 					}
+
+
+
+
+
+
+
 						//hhhs0j — Today at 15:19
 						//Add a dt indicator but only with numbers
 
