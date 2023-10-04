@@ -483,7 +483,7 @@ void CVisuals::DrawTickbaseInfo(CBaseEntity* pLocal)
 					}
 					case 6:
 					{
-						// Display different animations and colors based on DT status
+						//if you're mentally challenged lemme explain
 						static int frame = 0;
 						const char* chargingCatFrames[] = {
 							"   > ^ <   ",
@@ -518,22 +518,22 @@ void CVisuals::DrawTickbaseInfo(CBaseEntity* pLocal)
 						}
 
 						const char** framesToDisplay = nullptr;
-						Color_t textColor = { 153, 255, 153, 255 }; // Default text color
+						Color_t textColor = { 153, 255, 153, 255 }; //Legit just default colour if you ever fucking want it???
 
 						if (G::Recharging) {
-							framesToDisplay = chargingCatFrames;
+							framesToDisplay = chargingCatFrames; //charging
 						}
 						else if (G::ShiftedTicks == 0) {
 							framesToDisplay = unchargedCatFrames;
-							textColor = { 255, 64, 64, 255 }; // Red for uncharged
+							textColor = { 255, 64, 64, 255 }; //uncharged colour
 						}
 						else if (G::WaitForShift) {
-							framesToDisplay = waitingCatFrames;
-							textColor = { 255, 178, 0, 255 }; // Yellow for wait
+							framesToDisplay = waitingCatFrames; // waiting for DT
+							textColor = { 255, 178, 0, 255 };
 						}
 						else {
-							framesToDisplay = chargedCatFrames;
-							textColor = { 66, 255, 0, 255 }; // Green for DT ready
+							framesToDisplay = chargedCatFrames; //FULLY CHARGED!
+							textColor = { 66, 255, 0, 255 }; 
 						}
 
 						g_Draw.String(FONT_INDICATORS, DTBox.c, DTBox.y - 3, textColor, ALIGN_CENTERHORIZONTAL, framesToDisplay[frame]);
@@ -542,12 +542,6 @@ void CVisuals::DrawTickbaseInfo(CBaseEntity* pLocal)
 
 						break;
 					}
-
-
-
-
-
-
 
 						//hhhs0j — Today at 15:19
 						//Add a dt indicator but only with numbers
